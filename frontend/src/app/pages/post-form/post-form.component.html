@@ -1,0 +1,38 @@
+<form class="card wide" [formGroup]="form" (ngSubmit)="submit()">
+  <h2>{{ isEdit ? '編輯文章' : '新增文章' }}</h2>
+
+  <label>
+    標題
+    <input formControlName="title" />
+  </label>
+  @if (form.controls.title.touched && form.controls.title.invalid) {
+    <small class="error">請輸入標題</small>
+  }
+
+  <label>
+    內容
+    <textarea rows="10" formControlName="content"></textarea>
+  </label>
+  @if (form.controls.content.touched && form.controls.content.invalid) {
+    <small class="error">請輸入內容</small>
+  }
+
+  <label>
+    標籤（以逗號分隔）
+    <input formControlName="tags" placeholder="例如：Java, Angular" />
+  </label>
+
+  <fieldset>
+    <legend>發佈狀態</legend>
+    <label class="inline"><input type="radio" formControlName="status" value="DRAFT" /> 草稿</label>
+    <label class="inline"><input type="radio" formControlName="status" value="PUBLISHED" /> 發佈</label>
+  </fieldset>
+
+  @if (error) {
+    <p class="error">{{ error }}</p>
+  }
+  <div class="actions">
+    <button type="submit">儲存</button>
+    <a routerLink="/posts"><button type="button">取消</button></a>
+  </div>
+</form>

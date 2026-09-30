@@ -1,0 +1,41 @@
+<div class="toolbar">
+  <form (ngSubmit)="search()">
+    <input name="keyword" [(ngModel)]="keyword" placeholder="搜尋標題" />
+    <button type="submit">搜尋</button>
+  </form>
+  <a routerLink="/posts/new"><button>新增文章</button></a>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>標題</th>
+      <th>作者</th>
+      <th>狀態</th>
+      <th>建立時間</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (post of result?.content; track post.id) {
+      <tr>
+        <td>{{ post.title }}</td>
+        <td>{{ post.author }}</td>
+        <td>{{ post.status === 'PUBLISHED' ? '已發佈' : '草稿' }}</td>
+        <td>{{ post.createdAt | date: 'yyyy-MM-dd HH:mm' }}</td>
+        <td class="actions">
+          <a [routerLink]="['/posts', post.id, 'edit']"><button>編輯</button></a>
+          <button class="danger" (click)="remove(post)">刪除</button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+@if (result && result.totalPages > 1) {
+  <div class="pager">
+    <button [disabled]="page === 0" (click)="goTo(page - 1)">上一頁</button>
+    <span>{{ page + 1 }} / {{ result.totalPages }}</span>
+    <button [disabled]="page + 1 >= result.totalPages" (click)="goTo(page + 1)">下一頁</button>
+  </div>
+}

@@ -1,0 +1,25 @@
+body { margin: 0; font-family: system-ui, sans-serif; background: #f5f6f8; color: #222; }
+header { display: flex; justify-content: space-between; align-items: center; padding: 12px 24px; background: #fff; border-bottom: 1px solid #ddd; }
+main { max-width: 960px; margin: 24px auto; padding: 0 16px; }
+
+input, textarea, button { font: inherit; }
+input:not([type=radio]), textarea { width: 100%; box-sizing: border-box; padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px; }
+button { padding: 6px 14px; border: 1px solid #888; border-radius: 4px; background: #fff; cursor: pointer; }
+button[type=submit] { background: #2563eb; border-color: #2563eb; color: #fff; }
+button.danger { color: #dc2626; border-color: #dc2626; }
+button:disabled { opacity: .5; cursor: default; }
+
+.card { display: flex; flex-direction: column; gap: 8px; max-width: 360px; margin: 40px auto; padding: 24px; background: #fff; border-radius: 8px; box-shadow: 0 1px 3px #0002; }
+.card.wide { max-width: none; margin: 0; }
+.card label { display: flex; flex-direction: column; gap: 4px; }
+.card label.inline { display: inline-flex; flex-direction: row; margin-right: 16px; }
+fieldset { border: 1px solid #ccc; border-radius: 4px; }
+.error { color: #dc2626; margin: 0; }
+
+.toolbar { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 16px; }
+.toolbar form { display: flex; gap: 8px; }
+.toolbar input { width: 240px; }
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { padding: 8px 12px; border-bottom: 1px solid #eee; text-align: left; }
+.actions { display: flex; gap: 8px; }
+.pager { display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 16px; }
