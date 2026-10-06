@@ -3,34 +3,42 @@
     <input name="keyword" [(ngModel)]="keyword" placeholder="搜尋標題" />
     <button type="submit">搜尋</button>
   </form>
-  <a routerLink="/posts/new"><button>新增文章</button></a>
+  <a class="btn primary" routerLink="/posts/new">新增文章</a>
 </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>標題</th>
-      <th>作者</th>
-      <th>狀態</th>
-      <th>建立時間</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (post of result?.content; track post.id) {
+<div class="table-wrap">
+  <table>
+    <thead>
       <tr>
-        <td>{{ post.title }}</td>
-        <td>{{ post.author }}</td>
-        <td>{{ post.status === 'PUBLISHED' ? '已發佈' : '草稿' }}</td>
-        <td>{{ post.createdAt | date: 'yyyy-MM-dd HH:mm' }}</td>
-        <td class="actions">
-          <a [routerLink]="['/posts', post.id, 'edit']"><button>編輯</button></a>
-          <button class="danger" (click)="remove(post)">刪除</button>
-        </td>
+        <th>標題</th>
+        <th>作者</th>
+        <th>狀態</th>
+        <th>建立時間</th>
+        <th></th>
       </tr>
-    }
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      @for (post of result?.content; track post.id) {
+        <tr>
+          <td>{{ post.title }}</td>
+          <td>{{ post.author }}</td>
+          <td>
+            <span class="badge" [class.published]="post.status === 'PUBLISHED'">{{ post.status === 'PUBLISHED' ? '已發佈' : '草稿' }}</span>
+          </td>
+          <td>{{ post.createdAt | date: 'yyyy-MM-dd HH:mm' }}</td>
+          <td class="actions">
+            <a class="btn" [routerLink]="['/posts', post.id, 'edit']">編輯</a>
+            <button class="danger" (click)="remove(post)">刪除</button>
+          </td>
+        </tr>
+      } @empty {
+        @if (result) {
+          <tr><td class="empty" colspan="5">查無文章</td></tr>
+        }
+      }
+    </tbody>
+  </table>
+</div>
 
 @if (result && result.totalPages > 1) {
   <div class="pager">
