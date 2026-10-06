@@ -1,9 +1,13 @@
+<div class="page-header">
+  <h1>文章 @if (result) { <span class="count">{{ result.totalElements }}</span> }</h1>
+  <a class="btn btn-primary" routerLink="/posts/new">＋ 新增文章</a>
+</div>
+
 <div class="toolbar">
   <form (ngSubmit)="search()">
-    <input name="keyword" [(ngModel)]="keyword" placeholder="搜尋標題" />
+    <input name="keyword" [(ngModel)]="keyword" placeholder="搜尋標題" aria-label="搜尋標題" />
     <button type="submit">搜尋</button>
   </form>
-  <a class="btn primary" routerLink="/posts/new">新增文章</a>
 </div>
 
 <div class="table-wrap">
@@ -11,39 +15,57 @@
     <thead>
       <tr>
         <th>標題</th>
-        <th>作者</th>
+        <th class="hide-mobile">作者</th>
         <th>狀態</th>
-        <th>建立時間</th>
+        <th class="hide-mobile">建立時間</th>
         <th></th>
       </tr>
     </thead>
     <tbody>
       @for (post of result?.content; track post.id) {
         <tr>
-          <td>{{ post.title }}</td>
-          <td>{{ post.author }}</td>
-          <td>
-            <span class="badge" [class.published]="post.status === 'PUBLISHED'">{{ post.status === 'PUBLISHED' ? '已發佈' : '草稿' }}</span>
+          <td class="title">
+            {{ post.title }}
+            @if (post.tags.length) {
+              <div class="tags">@for (tag of post.tags; track tag) { <span class="tag">{{ tag }}</span> }</div>
+            }
           </td>
-          <td>{{ post.createdAt | date: 'yyyy-MM-dd HH:mm' }}</td>
-          <td class="actions">
-            <a class="btn" [routerLink]="['/posts', post.id, 'edit']">編輯</a>
-            <button class="danger" (click)="remove(post)">刪除</button>
+          <td class="muted hide-mobile">{{ post.author }}</td>
+          <td>
+            <span class="status" [class.published]="post.status === 'PUBLISHED'">{{ post.status === 'PUBLISHED' ? '已發佈' : '草稿' }}</span>
+          </td>
+          <td class="muted hide-mobile">{{ post.createdAt | date: 'yyyy-MM-dd HH:mm' }}</td>
+          <td>
+            <div class="actions">
+              <a class="btn btn-ghost btn-sm" [routerLink]="['/posts', post.id, 'edit']">編輯</a>
+              <button class="danger btn-sm" (click)="remove(post)">刪除</button>
+            </div>
           </td>
         </tr>
-      } @empty {
-        @if (result) {
-          <tr><td class="empty" colspan="5">查無文章</td></tr>
-        }
       }
     </tbody>
   </table>
+
+  @if (result && result.content.length === 0) {
+    <div class="empty">
+      @if (keyword) {
+        <strong>找不到符合的文章</strong>
+        換個關鍵字試試看。
+      } @else {
+        <strong>還沒有文章</strong>
+        開始寫第一篇文章吧。
+        <br /><a class="btn btn-primary" routerLink="/posts/new">＋ 新增文章</a>
+      }
+    </div>
+  }
 </div>
 
 @if (result && result.totalPages > 1) {
   <div class="pager">
-    <button [disabled]="page === 0" (click)="goTo(page - 1)">上一頁</button>
-    <span>{{ page + 1 }} / {{ result.totalPages }}</span>
-    <button [disabled]="page + 1 >= result.totalPages" (click)="goTo(page + 1)">下一頁</button>
+    <span>第 {{ page + 1 }} / {{ result.totalPages }} 頁</span>
+    <div>
+      <button [disabled]="page === 0" (click)="goTo(page - 1)">上一頁</button>
+      <button [disabled]="page + 1 >= result.totalPages" (click)="goTo(page + 1)">下一頁</button>
+    </div>
   </div>
 }

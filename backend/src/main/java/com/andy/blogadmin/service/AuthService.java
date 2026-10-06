@@ -18,7 +18,6 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    // ponytail: token 存記憶體，重啟即失效；之後改 JWT + Spring Security
     private final Map<String, Long> tokens = new ConcurrentHashMap<>();
 
     public AuthService(UserRepository userRepository) {

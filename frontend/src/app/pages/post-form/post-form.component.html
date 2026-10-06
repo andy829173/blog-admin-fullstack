@@ -1,9 +1,9 @@
 <form class="card wide" [formGroup]="form" (ngSubmit)="submit()">
-  <h2>{{ isEdit ? '編輯文章' : '新增文章' }}</h2>
+  <h1>{{ isEdit ? '編輯文章' : '新增文章' }}</h1>
 
   <label>
     標題
-    <input formControlName="title" />
+    <input class="title-input" formControlName="title" placeholder="文章標題" />
   </label>
   @if (form.controls.title.touched && form.controls.title.invalid) {
     <small class="error">請輸入標題</small>
@@ -11,7 +11,7 @@
 
   <label>
     內容
-    <textarea rows="10" formControlName="content"></textarea>
+    <textarea rows="14" formControlName="content" placeholder="開始寫作…"></textarea>
   </label>
   @if (form.controls.content.touched && form.controls.content.invalid) {
     <small class="error">請輸入內容</small>
@@ -24,15 +24,17 @@
 
   <fieldset>
     <legend>發佈狀態</legend>
-    <label class="inline"><input type="radio" formControlName="status" value="DRAFT" /> 草稿</label>
-    <label class="inline"><input type="radio" formControlName="status" value="PUBLISHED" /> 發佈</label>
+    <div class="segmented">
+      <label><input type="radio" formControlName="status" value="DRAFT" /><span>草稿</span></label>
+      <label><input type="radio" formControlName="status" value="PUBLISHED" /><span>發佈</span></label>
+    </div>
   </fieldset>
 
   @if (error) {
     <p class="error">{{ error }}</p>
   }
-  <div class="actions">
-    <a class="btn" routerLink="/posts">取消</a>
+  <div class="form-actions">
+    <a class="btn btn-ghost" routerLink="/posts">取消</a>
     <button type="submit">儲存</button>
   </div>
 </form>
