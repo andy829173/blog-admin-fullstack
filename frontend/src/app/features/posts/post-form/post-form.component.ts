@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { PostService, PostStatus } from '../../core/post.service';
+import { PostService, PostStatus } from '../post.service';
 
 @Component({
   selector: 'app-post-form',

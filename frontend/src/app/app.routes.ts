@@ -1,13 +1,13 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/auth.guard';
-import { LoginComponent } from './pages/login/login.component';
-import { PostListComponent } from './pages/post-list/post-list.component';
-import { PostFormComponent } from './pages/post-form/post-form.component';
 
+// 各功能延遲載入；未登入時 canMatch 擋下，連文章模組的 chunk 都不會下載
 export const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: 'posts', component: PostListComponent, canActivate: [authGuard] },
-  { path: 'posts/new', component: PostFormComponent, canActivate: [authGuard] },
-  { path: 'posts/:id/edit', component: PostFormComponent, canActivate: [authGuard] },
+  { path: 'login', loadComponent: () => import('./features/login/login.component').then((m) => m.LoginComponent) },
+  {
+    path: 'posts',
+    canMatch: [authGuard],
+    loadChildren: () => import('./features/posts/posts.routes').then((m) => m.POSTS_ROUTES),
+  },
   { path: '**', redirectTo: 'posts' },
 ];

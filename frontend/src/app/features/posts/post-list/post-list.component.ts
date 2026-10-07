@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { Page, Post, PostService } from '../../core/post.service';
+import { Page, Post, PostService } from '../post.service';
 
 @Component({
   selector: 'app-post-list',
