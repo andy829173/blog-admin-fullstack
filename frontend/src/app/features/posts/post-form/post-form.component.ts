@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PostService, PostStatus } from '../post.service';
@@ -7,6 +7,7 @@ import { PostService, PostStatus } from '../post.service';
   selector: 'app-post-form',
   imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './post-form.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostFormComponent implements OnInit {
   private fb = inject(FormBuilder);
@@ -15,7 +16,7 @@ export class PostFormComponent implements OnInit {
   private id = Number(inject(ActivatedRoute).snapshot.paramMap.get('id')) || null;
 
   isEdit = this.id !== null;
-  error = '';
+  error = signal('');
   // 標籤用逗號分隔的文字輸入
   form = this.fb.nonNullable.group({
     title: ['', Validators.required],
@@ -50,7 +51,7 @@ export class PostFormComponent implements OnInit {
     const request = this.id ? this.postService.update(this.id, body) : this.postService.create(body);
     request.subscribe({
       next: () => this.router.navigate(['/posts']),
-      error: (err) => (this.error = err.error?.detail ?? '儲存失敗'),
+      error: (err) => this.error.set(err.error?.detail ?? '儲存失敗'),
     });
   }
 }

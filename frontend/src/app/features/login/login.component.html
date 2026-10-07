@@ -18,8 +18,8 @@
     <small class="error">請輸入密碼</small>
   }
 
-  @if (error) {
-    <p class="error">{{ error }}</p>
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
   }
   <button type="submit">登入</button>
 </form>

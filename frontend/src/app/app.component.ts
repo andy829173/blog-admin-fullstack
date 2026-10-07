@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from './core/auth.service';
 
@@ -14,6 +14,7 @@ import { AuthService } from './core/auth.service';
     }
     <main><router-outlet /></main>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
   auth = inject(AuthService);

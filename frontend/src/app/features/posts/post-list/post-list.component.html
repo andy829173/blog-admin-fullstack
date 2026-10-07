@@ -1,5 +1,5 @@
 <div class="page-header">
-  <h1>文章 @if (result) { <span class="count">{{ result.totalElements }}</span> }</h1>
+  <h1>文章 @if (result(); as result) { <span class="count">{{ result.totalElements }}</span> }</h1>
   <a class="btn btn-primary" routerLink="/posts/new">＋ 新增文章</a>
 </div>
 
@@ -22,7 +22,7 @@
       </tr>
     </thead>
     <tbody>
-      @for (post of result?.content; track post.id) {
+      @for (post of result()?.content; track post.id) {
         <tr>
           <td class="title">
             {{ post.title }}
@@ -46,7 +46,7 @@
     </tbody>
   </table>
 
-  @if (result && result.content.length === 0) {
+  @if (result()?.content?.length === 0) {
     <div class="empty">
       @if (keyword) {
         <strong>找不到符合的文章</strong>
@@ -60,12 +60,14 @@
   }
 </div>
 
-@if (result && result.totalPages > 1) {
-  <div class="pager">
-    <span>第 {{ page + 1 }} / {{ result.totalPages }} 頁</span>
-    <div>
-      <button [disabled]="page === 0" (click)="goTo(page - 1)">上一頁</button>
-      <button [disabled]="page + 1 >= result.totalPages" (click)="goTo(page + 1)">下一頁</button>
+@if (result(); as result) {
+  @if (result.totalPages > 1) {
+    <div class="pager">
+      <span>第 {{ page() + 1 }} / {{ result.totalPages }} 頁</span>
+      <div>
+        <button [disabled]="page() === 0" (click)="goTo(page() - 1)">上一頁</button>
+        <button [disabled]="page() + 1 >= result.totalPages" (click)="goTo(page() + 1)">下一頁</button>
+      </div>
     </div>
-  </div>
+  }
 }
