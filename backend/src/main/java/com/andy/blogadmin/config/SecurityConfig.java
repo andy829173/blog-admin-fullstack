@@ -1,6 +1,11 @@
 package com.andy.blogadmin.config;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +30,9 @@ import java.nio.charset.StandardCharsets;
 
 // 無狀態 JWT 驗證：除了登入以外的 API 都要帶 Authorization: Bearer <token>
 @Configuration
+// Swagger UI 右上角 Authorize 可貼入登入取得的 token
+@OpenAPIDefinition(info = @Info(title = "Blog Admin API"), security = @SecurityRequirement(name = "bearer"))
+@SecurityScheme(name = "bearer", type = SecuritySchemeType.HTTP, scheme = "bearer", bearerFormat = "JWT")
 public class SecurityConfig {
 
     @Bean
@@ -34,7 +42,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/api/auth/login", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(o -> o.jwt(Customizer.withDefaults()).authenticationEntryPoint(unauthorized()))
                 .exceptionHandling(e -> e.authenticationEntryPoint(unauthorized()))
