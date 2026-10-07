@@ -1,5 +1,8 @@
 <form class="card wide" [formGroup]="form" (ngSubmit)="submit()">
   <h1>{{ isEdit ? '編輯文章' : '新增文章' }}</h1>
+  @if (loading()) {
+    <p class="loading-text">載入文章中…</p>
+  }
 
   <label>
     標題
@@ -35,6 +38,6 @@
   }
   <div class="form-actions">
     <a class="btn btn-ghost" routerLink="/posts">取消</a>
-    <button type="submit">儲存</button>
+    <button type="submit" [disabled]="loading() || saving()">{{ saving() ? '儲存中…' : '儲存' }}</button>
   </div>
 </form>

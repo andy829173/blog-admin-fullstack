@@ -10,7 +10,11 @@
   </form>
 </div>
 
-<div class="table-wrap">
+@if (error()) {
+  <p class="error page-error">{{ error() }} <button class="btn-sm" (click)="load()">重試</button></p>
+}
+
+<div class="table-wrap" [class.is-loading]="loading()">
   <table>
     <thead>
       <tr>
@@ -46,7 +50,9 @@
     </tbody>
   </table>
 
-  @if (result()?.content?.length === 0) {
+  @if (loading() && !result()) {
+    <div class="empty">載入中…</div>
+  } @else if (!loading() && result()?.content?.length === 0) {
     <div class="empty">
       @if (keyword) {
         <strong>找不到符合的文章</strong>

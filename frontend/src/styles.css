@@ -113,6 +113,9 @@ td.muted { color: var(--text-2); font-size: 13px; white-space: nowrap; }
 .status.published::before { background: var(--success); }
 .actions { display: flex; justify-content: flex-end; gap: 4px; }
 
+.table-wrap.is-loading { opacity: .55; pointer-events: none; transition: opacity .15s; }
+.page-error { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.loading-text { margin-top: 12px; color: var(--text-3); font-size: 13px; }
 .empty { padding: 56px 24px; text-align: center; color: var(--text-2); }
 .empty strong { display: block; margin-bottom: 4px; color: var(--text); font-size: 15px; }
 .empty .btn { margin-top: 16px; }

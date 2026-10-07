@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs';
 import { AuthService } from '../../core/auth.service';
 
 @Component({
@@ -18,6 +19,7 @@ export class LoginComponent {
     email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required],
   });
+  loading = signal(false);
   error = signal('');
 
   submit() {
@@ -26,9 +28,14 @@ export class LoginComponent {
       return;
     }
     const { email, password } = this.form.getRawValue();
-    this.auth.login(email, password).subscribe({
-      next: () => this.router.navigate(['/posts']),
-      error: (err) => this.error.set(err.error?.detail ?? '登入失敗'),
-    });
+    this.loading.set(true);
+    this.error.set('');
+    this.auth
+      .login(email, password)
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: () => this.router.navigate(['/posts']),
+        error: (err) => this.error.set(err.error?.detail ?? '登入失敗'),
+      });
   }
 }
