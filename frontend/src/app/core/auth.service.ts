@@ -25,12 +25,8 @@ export class AuthService {
     );
   }
 
+  // JWT 為無狀態，登出只需丟棄 token
   logout() {
-    this.http.post('/api/auth/logout', {}).subscribe({ error: () => {} });
-    this.clear();
-  }
-
-  clear() {
     localStorage.removeItem(STORAGE_KEY);
     this.user.set(null);
   }

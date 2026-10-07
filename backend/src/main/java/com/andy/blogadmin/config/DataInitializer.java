@@ -2,8 +2,8 @@ package com.andy.blogadmin.config;
 
 import com.andy.blogadmin.entity.User;
 import com.andy.blogadmin.repository.UserRepository;
-import com.andy.blogadmin.service.AuthService;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 // 啟動時建立測試帳號
@@ -11,17 +11,17 @@ import org.springframework.stereotype.Component;
 public class DataInitializer implements CommandLineRunner {
 
     private final UserRepository userRepository;
-    private final AuthService authService;
+    private final PasswordEncoder passwordEncoder;
 
-    public DataInitializer(UserRepository userRepository, AuthService authService) {
+    public DataInitializer(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.authService = authService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void run(String... args) {
         if (userRepository.findByEmail("admin@example.com").isEmpty()) {
-            userRepository.save(new User("admin@example.com", authService.encode("password123"), "Admin"));
+            userRepository.save(new User("admin@example.com", passwordEncoder.encode("password123"), "Admin"));
         }
     }
 }

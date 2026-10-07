@@ -1,6 +1,5 @@
 package com.andy.blogadmin.controller;
 
-import com.andy.blogadmin.config.AuthInterceptor;
 import com.andy.blogadmin.dto.PageResponse;
 import com.andy.blogadmin.dto.PostRequest;
 import com.andy.blogadmin.dto.PostResponse;
@@ -9,6 +8,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,8 +37,8 @@ public class PostController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PostResponse create(@Valid @RequestBody PostRequest request,
-                               @RequestAttribute(AuthInterceptor.USER_ID) Long userId) {
-        return postService.create(request, userId);
+                               @AuthenticationPrincipal Jwt jwt) {
+        return postService.create(request, Long.valueOf(jwt.getSubject()));
     }
 
     @PutMapping("/{id}")
